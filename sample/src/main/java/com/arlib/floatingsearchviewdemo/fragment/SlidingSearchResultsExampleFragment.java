@@ -165,9 +165,9 @@ public class SlidingSearchResultsExampleFragment extends BaseExampleFragment {
 
         //handle menu clicks the same way as you would
         //in a regular activity
-        mSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+        mSearchView.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public void onActionMenuItemSelected(MenuItem item) {
+            public  boolean onMenuItemClick(MenuItem item) {
 
                 if (item.getItemId() == R.id.action_change_colors) {
 
@@ -189,7 +189,7 @@ public class SlidingSearchResultsExampleFragment extends BaseExampleFragment {
                     Toast.makeText(getActivity().getApplicationContext(), item.getTitle(),
                             Toast.LENGTH_SHORT).show();
                 }
-
+                return true;
             }
         });
 
