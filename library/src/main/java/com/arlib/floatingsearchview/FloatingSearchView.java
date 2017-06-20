@@ -80,6 +80,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.support.annotation.MenuRes;
+import android.view.Menu;
+
+
 /**
  * A search UI widget that implements a floating search box also called persistent
  * search.
@@ -174,7 +178,7 @@ public class FloatingSearchView extends FrameLayout {
     private int mMenuId = -1;
     private int mActionMenuItemColor;
     private int mOverflowIconColor;
-    private OnMenuItemClickListener mActionMenuItemListener;
+    private MenuItem.OnMenuItemClickListener mActionMenuItemListener;
     private ImageView mClearButton;
     private int mClearBtnColor;
     private Drawable mIconClear;
@@ -302,21 +306,8 @@ public class FloatingSearchView extends FrameLayout {
         void onHomeClicked();
     }
 
-    /**
-     * Interface for implementing a listener to listen
-     * when an item in the action (the item can be presented as an action
-     * ,or as a menu item in the overflow menu) menu has been selected.
-     */
-    public interface OnMenuItemClickListener {
-
-        /**
-         * Called when a menu item in has been
-         * selected.
-         *
-         * @param item the selected menu item.
-         */
-        void onActionMenuItemSelected(MenuItem item);
-    }
+  
+   
 
     /**
      * Interface for implementing a listener to listen
@@ -572,7 +563,7 @@ public class FloatingSearchView extends FrameLayout {
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
 
                 if (mActionMenuItemListener != null) {
-                    mActionMenuItemListener.onActionMenuItemSelected(item);
+                    return mActionMenuItemListener.onMenuItemClick(item);
                 }
 
                 //todo check if we should care about this return or not
@@ -1059,12 +1050,14 @@ public class FloatingSearchView extends FrameLayout {
      *
      * @param menuId a menu xml resource reference
      */
-    public void inflateOverflowMenu(int menuId) {
+    public Menu inflateOverflowMenu(@MenuRes int menuId) {
         mMenuId = menuId;
-        mMenuView.reset(menuId, actionMenuAvailWidth());
-        if (mIsFocused) {
+        Menu inflatedMenu = mMenuView.reset(menuId, actionMenuAvailWidth());
+
+       if (mIsFocused) {
             mMenuView.hideIfRoomItems(false);
         }
+        return inflatedMenu;
     }
 
     private int actionMenuAvailWidth() {
@@ -1721,7 +1714,7 @@ public class FloatingSearchView extends FrameLayout {
      *
      * @param listener listener to listen to menu item clicks
      */
-    public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
+    public void setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener listener) {
         this.mActionMenuItemListener = listener;
         //todo reset menu view listener
     }
