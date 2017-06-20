@@ -46,6 +46,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.support.annotation.MenuRes;
+import android.view.Menu;
+
 /**
  * A view that shows menu items as actions or
  * as items in a overflow popup.
@@ -149,10 +152,11 @@ public class MenuView extends LinearLayout {
      *                   android:showAsAction="ifRoom" or android:showAsAction="always"
      *                   will show as actions.
      */
-    public void reset(int menu, int availWidth) {
+    public Menu reset(@MenuRes int menu, int availWidth) {
         mMenu = menu;
         if (mMenu == -1) {
-            return;
+           
+            return null;
         }
 
         mActionShowAlwaysItems = new ArrayList<>();
@@ -253,6 +257,7 @@ public class MenuView extends LinearLayout {
             mVisibleWidth = ((int) ACTION_DIMENSION_PX * getChildCount()) - (mHasOverflow ? Util.dpToPx(8) : 0);
             mOnVisibleWidthChangedListener.onItemsMenuVisibleWidthChanged(mVisibleWidth);
         }
+         return mMenuBuilder;
     }
 
     public int getVisibleWidth() {
